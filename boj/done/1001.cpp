@@ -1,3 +1,5 @@
+// A-B
+
 #include <iostream>
 
 // ctrl alt n for run code ctrl alt m for stop the running code 
