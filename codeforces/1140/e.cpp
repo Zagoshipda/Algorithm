@@ -1,4 +1,4 @@
-//by, adedalic
+//by, adedalic from editorial
 
 #include<bits/stdc++.h>
 
