@@ -2,7 +2,7 @@
 using namespace std;
 
 #define IOS ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
-// #define int long long
+#define ll long long
 #define endl '\n'
 
 // int n, ans, a[10], s=1e18; 
