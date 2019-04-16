@@ -5,7 +5,7 @@ using namespace std;
 #define endl '\n'
 #define ll long long    //using ll = long long;
 
-//문제 잘못이해함... ㅅㅂ 
+//문제 잘못이해함... 
 //아래와 같이하면 그냥 전체 n개 중 순서를 고려하지 않고, 최대한으로 넣을 수 있는 k개를, 그나마도 잘못된 방법으로 구하게 됨... -> 왜 잘못된 방법인지는 b_3.cpp 참고
 
 int n, h;
