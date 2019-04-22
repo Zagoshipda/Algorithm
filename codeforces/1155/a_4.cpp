@@ -2,7 +2,7 @@
 // A. Reverse a Substring
 // by, ko_osaga
 
-// string 의 사용 연습해보기 
+// string 의 사용 관찰/ 연습해보기 
 
 #include <bits/stdc++.h>
 using namespace std;
