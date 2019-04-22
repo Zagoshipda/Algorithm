@@ -19,6 +19,8 @@ int main(){
 
     scanf("%d %s", &n, s);
 	int cnt = 0;
+
+	// char 배열을 int 배열로 변환하지 않고 바로 char 끼리의 비교를 통해 cnt 값을 정해주었다. char 의 비교는 == 로도 가능. string은 strcpy() 를 사용해야 함 
 	for (int i = 0; i < n - 10; i++) {
 		if (s[i] == '8')
 			cnt++;
