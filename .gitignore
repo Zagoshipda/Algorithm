@@ -6,3 +6,6 @@
 *.torrent
 *.bin
 *.ipch
+*test.cpp
+
+.vscode/
