@@ -27,19 +27,18 @@ int main(){
         }
     }
     cin >> x;
-    // cout << "x : " << x << endl;
     for(int i=half; i<n; ++i){
         a[i] = x;
         s[i] = s[i-1] + a[i];
     }
 
     // n == 2
-    if(n-k == 0){
-        if(a[0] + a[1] > 0){
-            cout << 2 << endl;
-            return 0;
-        }
-    }
+    // if(n-k == 0){
+    //     if(a[0] + a[1] > 0){
+    //         cout << 2 << endl;
+    //         return 0;
+    //     }
+    // }
 
     vector<ll> p(n);
     vector<ll> minVal(n);
@@ -54,7 +53,7 @@ int main(){
     //     cout << p[i] << ' ' << minVal[i] << endl;
     // }
 
-    for(int i=k; i<n; ++i){
+    for(int i=k; i<=n; ++i){
         // ll minVal = 0;
         // for(int j=0; j<n-i; ++j){
         //     if(minVal == 0 || p[j] < minVal){
@@ -66,12 +65,7 @@ int main(){
             return 0;
         }
     }
-    if(s[n-1] > 0){
-        cout << n << endl;
-    }
-    else{
-        cout << -1 << endl;
-    }
+    cout << -1 << endl;
 
 
     return 0;
