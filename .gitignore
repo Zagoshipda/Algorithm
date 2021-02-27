@@ -7,5 +7,6 @@
 *.bin
 *.ipch
 *test.cpp
+*answer.cpp
 
 .vscode/
