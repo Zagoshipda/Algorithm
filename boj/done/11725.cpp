@@ -15,15 +15,15 @@ queue<int> nodes;
 bool visited[SIZE];
 int parent[SIZE];
 
-void print_parent_node(){
+void calculate_parent_node_bfs(int start){
     // for(int i=1; i<=N; ++i){
     //     for(int child : tree[i]){
     //         parent[child] = i;
     //     }
     // }
 
-    nodes.push(ROOT);
-    visited[ROOT] = true;
+    nodes.push(start);
+    visited[start] = true;
     while(!nodes.empty()){
         int current = nodes.front();
         nodes.pop();
@@ -35,9 +35,19 @@ void print_parent_node(){
             }
         }
     }
+}
 
-    for(int i=2; i<=N; ++i){
-        cout << parent[i] << endl;
+void calculate_parent_node_dfs(int current){
+    visited[current] = true;
+    if(tree[current].empty()){
+        return;
+    }
+    // cout << "current " << current << endl;
+    for(int child : tree[current]){
+        if(!visited[child]){
+            parent[child] = current;
+            calculate_parent_node_dfs(child);
+        }
     }
 }
 
@@ -51,7 +61,12 @@ int main(){
         tree[node2].push_back(node1);
     }
 
-    print_parent_node();
+    calculate_parent_node_bfs(ROOT);
+    // calculate_parent_node_dfs(ROOT);
+
+    for(int i=2; i<=N; ++i){
+        cout << parent[i] << endl;
+    }
 
     return 0;
 }
