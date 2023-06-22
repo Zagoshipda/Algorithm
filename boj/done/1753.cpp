@@ -18,6 +18,11 @@
     1. array O(V + V^2 + E)
     2. binary heap O(V + VlogV + ElogV)
     3. fibonacci heap O(V + VlogV + E)
+        data structure is much more difficult to implement compared to array or binary heap
+    4. (special case) dial's algorithm, when weights are NOT big
+        https://www.geeksforgeeks.org/dials-algorithm-optimized-dijkstra-for-small-range-weights/
+        https://www.codingninjas.com/codestudio/library/dials-algorithm
+        https://blog.naver.com/jinhan814/222511581119
 */
 
 #include <bits/stdc++.h>
@@ -30,12 +35,13 @@ using namespace std;
 
 #define SIZE_V 20'001
 #define SIZE_E 300'000
+#define SIZE_W 10
 #define MAX_PATH_VALUE (INT_MAX / 2)
 int V, E;
 int K;
 int u, v, w;
 
-// NOTE : NOT a simple graph, multiple edges can exist between two vertices
+// NOTE : may NOT be a simple graph, multiple (directed) edges can exist between two vertices
 vector<pair<int, int>> graph[SIZE_V];   // pair<outgoing vertex, weight>
 int shortest_path_value[SIZE_V];        // shortest distance from source, changeable look-up table
 
@@ -69,9 +75,52 @@ void relax(int from, int to, int weight){
     shortest_path_value[to] = shortest_path_value[from] + weight;
 }
 
+// time exceeded
 // naive implementation with direct access array, have to find the minimum shortest distance on each cycle
+// int arr[SIZE_V];
+bool visited[SIZE_V];
+
+// pair<int, int> get_vertex_with_shortest_distance(){
+int get_vertex_with_shortest_distance(){
+    int distance = MAX_PATH_VALUE;
+    int vertex = -1;
+    for(int i=1; i<=V; ++i){
+        if(!visited[i] && shortest_path_value[i] < distance){
+            distance = shortest_path_value[i];
+            vertex = i;
+        }
+    }
+
+    // return {vertex, distance};
+    return vertex;
+}
+
 void dijkstra_array(){
 
+    shortest_path_value[K] = 0;
+
+    while(true){
+        int current_vertex, current_distance;
+        // tie(current_vertex, current_distance) = get_vertex_with_shortest_distance();
+        current_vertex = get_vertex_with_shortest_distance();
+        if(current_vertex < 0){
+            break;
+        }
+        current_distance = shortest_path_value[current_vertex];
+
+        visited[current_vertex] = true;
+
+        for(pair<int, int> next : graph[current_vertex]){
+            int next_vertex = next.first;
+            int edge_weight = next.second;
+            int old_distance = shortest_path_value[next_vertex];
+            int new_distance = shortest_path_value[current_vertex] + edge_weight;
+
+            if(new_distance < old_distance){
+                relax(current_vertex, next_vertex, edge_weight);
+            }
+        }
+    }
 }
 
 // NOTE : normal priority queue cannot update shortest distances
@@ -85,7 +134,6 @@ void dijkstra_array(){
 priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>> > pq_min;
 // pair<distance, vertex> sorted by distance(key)
 void dijkstra_pq_min(){
-    initialize();
 
     pq_min.push({0, K});
     shortest_path_value[K] = 0;
@@ -97,10 +145,12 @@ void dijkstra_pq_min(){
         int current_vertex = current.second;
         int current_distance = current.first;
 
-        // NOTE : already processed
-        // different path with the same shortest distance can be added to PQ
-        // and this will pass the condition below
-        // which will go through the for loop and and increase the running time
+        // handle cases such that vertex has already been processed (optional)
+            // NOTE : algorithm correctness still holds without this condition,
+            // just for efficient running time
+        // NOTE : different path with the same shortest distance can be added to PQ
+            // and this will pass the condition below
+            // which will go through the for loop and and increase the running time
         if(shortest_path_value[current_vertex] < current_distance){
             continue;
         }
@@ -121,7 +171,31 @@ void dijkstra_pq_min(){
 // priority queue with ascending order, get last (largest) element : max-heap (defulat PQ)
 priority_queue<pair<int, int>, vector<pair<int,int>>, less<pair<int, int>> > pq_max;
 void dijkstra_pq_max(){
+    pq_max.push({0, K});
+    shortest_path_value[K] = 0;
 
+    while(!pq_max.empty()){
+        pair<int, int> current = pq_max.top();
+        pq_max.pop();
+
+        int current_vertex = current.second;
+        int current_distance = -current.first;
+
+        if(shortest_path_value[current_vertex] < current_distance){
+            continue;
+        }
+
+        for(pair<int, int> next : graph[current_vertex]){
+            int next_vertex = next.first;
+            int edge_weight = next.second;
+            int old_distance = shortest_path_value[next_vertex];
+            int new_distance = shortest_path_value[current_vertex] + edge_weight;
+            if(new_distance < old_distance){
+                relax(current_vertex, next_vertex, edge_weight);
+                pq_max.push({-new_distance, next_vertex});
+            }
+        }
+    }
 }
 
 
@@ -154,7 +228,6 @@ set<pair<int, int>> pq_set; // pair<distance, vertex>
 // }
 
 void dijkstra_pq_set(){
-    initialize();
 
     pq_set.insert({0, K});
     shortest_path_value[K] = 0;
@@ -168,10 +241,6 @@ void dijkstra_pq_set(){
         int current_vertex = current.second;
         int current_distance = current.first;
 
-        if(shortest_path_value[current_vertex] < current_distance){
-            continue;
-        }
-
         for(pair<int, int> next : graph[current_vertex]){
             int next_vertex = next.first;
             int edge_weight = next.second;
@@ -182,6 +251,89 @@ void dijkstra_pq_set(){
                 // update priority queue
                 pq_set.erase({old_distance, next_vertex});
                 pq_set.insert({new_distance, next_vertex});
+            }
+        }
+    }
+}
+
+const int SIZE_BUCKET = SIZE_W*(SIZE_V-1)+1;
+vector<int> bucket_queue_vector[SIZE_BUCKET];  // bucket[i] : list of vertices at a distance i from the source s
+// bool visited[SIZE_V];
+
+void dijkstra_dials_algorithm_vector(){
+
+    int pos = 0;
+    bucket_queue_vector[pos].push_back(K);
+    shortest_path_value[K] = pos;
+
+    // longest path can have at most V-1 edges, and each edge can be of weight SIZE_W
+    const int MAX_POS = SIZE_W*(V-1)+1;
+    // const int MAX_POS = SIZE_W*V+1;
+    int current_vertex;
+    while(true){
+        while(pos < MAX_POS){
+            if(!bucket_queue_vector[pos].empty()){
+                current_vertex = *(bucket_queue_vector[pos].rbegin());
+                bucket_queue_vector[pos].pop_back();
+                // NOTE : algorithm still works without checking visited[] condition
+                if(!visited[current_vertex]){
+                    visited[current_vertex] = true;
+                    break;
+                }
+            }
+            else{
+                ++pos;
+            }
+        }
+
+        if(pos >= MAX_POS){
+            break;
+        }
+
+        for(pair<int, int> next : graph[current_vertex]){
+            int next_vertex = next.first;
+            int edge_weight = next.second;
+            int new_distance = shortest_path_value[current_vertex] + edge_weight;
+            if(new_distance < shortest_path_value[next_vertex]){
+                relax(current_vertex, next_vertex, edge_weight);
+                bucket_queue_vector[new_distance].push_back(next_vertex);
+            }
+        }
+    }
+}
+
+
+unordered_set<int> bucket_queue_set[SIZE_BUCKET];   // unordered set of unique objects of key, with average constant-time [search, insertion, and removal]
+void dijkstra_dials_algorithm_set(){
+
+    int pos = 0;
+    bucket_queue_set[pos].insert(K);
+    shortest_path_value[K] = pos;
+
+    int current_vertex;
+    const int MAX_POS = SIZE_W * (V-1) + 1;
+    while(true){
+        while(pos < MAX_POS){
+            if(!bucket_queue_set[pos].empty()){
+                auto iter = bucket_queue_set[pos].begin();
+                current_vertex = *(iter);
+                bucket_queue_set[pos].erase(iter);
+                break;
+            }
+            ++pos;
+        }
+
+        if(pos >= MAX_POS){
+            break;
+        }
+
+        for(pair<int, int> next : graph[current_vertex]){
+            int next_vertex = next.first;
+            int edge_weight = next.second;
+            int new_distance = shortest_path_value[current_vertex] + edge_weight;
+            if(new_distance < shortest_path_value[next_vertex]){
+                relax(current_vertex, next_vertex, edge_weight);
+                bucket_queue_set[new_distance].insert(next_vertex);
             }
         }
     }
@@ -205,13 +357,18 @@ void print_shortest_path_value(){
 }
 
 void solve(){
-    // dijkstra_array();
+    initialize();
 
-    // dijkstra_pq_max();
+    // dijkstra_array();
 
     // dijkstra_pq_min();
 
-    dijkstra_pq_set();
+    // dijkstra_pq_max();
+
+    // dijkstra_pq_set();
+
+    // dijkstra_dials_algorithm_vector();
+    dijkstra_dials_algorithm_set();
 
     // TODO
     // dijkstra_pq_fib();
