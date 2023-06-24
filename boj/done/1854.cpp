@@ -1,5 +1,9 @@
 /*
+    k-th shortest path distance
+    https://www.acmicpc.net/problem/1854
 
+    k-th dijkstra
+    https://everenew.tistory.com/159
 */
 
 #include <bits/stdc++.h>
