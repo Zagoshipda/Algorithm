@@ -11,7 +11,7 @@ using namespace std;
 #define SIZE 100001
 int n, k;
 int cost[SIZE];
-int dp[SIZE];
+int dp[SIZE];   // number of ways for making value k
 
 int main(){
     IOS;
@@ -26,6 +26,10 @@ int main(){
         for(int j=cost[i]; j<=k; ++j){
             dp[j] += dp[j-cost[i]];
         }
+        // for(int i=0; i<=k; ++i){
+        //     cout << dp[i] << " ";
+        // }
+        // cout << endl;
     }
 
     cout << dp[k] << endl;

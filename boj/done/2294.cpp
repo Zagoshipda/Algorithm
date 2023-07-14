@@ -8,15 +8,16 @@ using namespace std;
 
 #define SIZE_COIN 101
 #define SIZE_TARGET 10'001
+#define INITIAL_VALUE 99'999
 int n, k;
 int coin[SIZE_COIN];
-int dp[SIZE_TARGET];
+int dp[SIZE_TARGET];    // minimum number of coins required for making value k
 
 void calculate_minimum_number_of_coin(){
 
     // initialize
     for(int i=1; i<=k; ++i){
-        dp[i] = SIZE_TARGET;
+        dp[i] = INITIAL_VALUE;
     }
     dp[0] = 0;
 
@@ -25,9 +26,13 @@ void calculate_minimum_number_of_coin(){
         for(int sum=coin[i]; sum<=k; ++sum){
             dp[sum] = min(dp[sum], dp[sum - coin[i]] + 1);
         }
+        // for(int i=1; i<=k; ++i){
+        //     cout << dp[i] << " ";
+        // }
+        // cout << endl;
     }
 
-    if(dp[k] >= SIZE_TARGET){
+    if(dp[k] >= INITIAL_VALUE){
         cout << -1 << endl;
     }
     else{
