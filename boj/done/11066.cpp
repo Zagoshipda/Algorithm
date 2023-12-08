@@ -14,6 +14,8 @@
         https://cp-algorithms.com/dynamic_programming/knuth-optimization.html
         https://www.acmicpc.net/board/view/16202
 
+        https://www.acmicpc.net/source/24627324 (44ms)
+
 */
 
 #include <bits/stdc++.h>
