@@ -43,7 +43,11 @@ class min_heap{
         }
 
         bool is_leaf(int index){
-            return get_left_child(index) > heap.size()-1;
+            // NOTE : heap.size() returns size_type (Unsigned integer type, usually std::size_t)
+            // cout << "heap size : " << heap.size() << " " << heap.size()-1 << " " << (int)(heap.size())-1 << endl;
+            // ERROR
+            // return get_left_child(index) > heap.size()-1;
+            return get_left_child(index) > (int)(heap.size())-1;
         }
 
     public:
@@ -77,9 +81,9 @@ class min_heap{
             swap(heap[ROOT], heap[heap.size()-1]);
             heap.pop_back();
             int current = ROOT;
-            // ERROR : out of bounds
-            // if (after pop only one element) heap becomes empty, return immediately
+            // ERROR : out of bounds, error from heap.size()-1 when heap is empty
             // while(true){
+            // (after pop only one element) if heap becomes empty, return immediately
             while(!heap.empty()){
                 if(is_leaf(current)){
                     break;
