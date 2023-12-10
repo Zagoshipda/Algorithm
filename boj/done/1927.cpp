@@ -47,7 +47,8 @@ class min_heap{
             // cout << "heap size : " << heap.size() << " " << heap.size()-1 << " " << (int)(heap.size())-1 << endl;
             // ERROR
             // return get_left_child(index) > heap.size()-1;
-            return get_left_child(index) > (int)(heap.size())-1;
+            // return get_left_child(index) > (int)(heap.size())-1;
+            return get_left_child(index) > static_cast<int>(heap.size())-1;
         }
 
     public:
