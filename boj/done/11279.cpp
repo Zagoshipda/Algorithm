@@ -69,14 +69,12 @@ class max_heap{
         }
 
         void pop(){
-            swap(heap[0], heap[heap.size()-1]);
+            // swap(heap[0], heap[heap.size()-1]);
+            swap(heap[0], heap.back());
             heap.pop_back();
 
             int current = ROOT;
-            while(!heap.empty()){
-                if(is_leaf(current)){
-                    break;
-                }
+            while(!heap.empty() && !is_leaf(current)){
                 int left_child = get_left_child(current);
                 int right_child = get_right_child(current);
                 int max_child = (right_child > heap.size()-1) ? left_child : (
