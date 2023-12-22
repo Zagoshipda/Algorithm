@@ -10,12 +10,22 @@ using namespace std;
 #define endl '\n'
 #define ll long long    // range : -9*10^18 ~ 9*10^18
 
+/*
+
+*/
+
 void solve(){
+
+}
+
+void input(){
 
 }
 
 int main(){
     IOS;
+
+    input();
 
     solve();
 
