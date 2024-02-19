@@ -53,7 +53,7 @@ void solve_dp_prefix(){
         int prev_num = card_number[idx-2] - '0';
         int curr_num = card_number[idx-1] - '0';
 
-        assert(prev_num != 0 && curr_num != 0);
+        // assert(prev_num != 0 && curr_num != 0);
 
         if(1 <= curr_num && curr_num <= 9){
             dp[idx] += dp[idx-1];
@@ -87,15 +87,15 @@ void solve_dp_prefix_2(){
 
 void solve(){
     // solve_dp_suffix();
-    // solve_dp_prefix();
-    solve_dp_prefix_2();
+    solve_dp_prefix();
+    // solve_dp_prefix_2();
 }
 
 void input(){
     cin >> card_number;
-    for(int i=0; i<card_number.size(); ++i){
-        assert((card_number[i] - '0') != 0);
-    }
+    // for(int i=0; i<card_number.size(); ++i){
+    //     assert((card_number[i] - '0') != 0);
+    // }
 }
 
 int main(){
