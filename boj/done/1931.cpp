@@ -1,6 +1,10 @@
 /*
     https://www.acmicpc.net/problem/1931
-    (activity selection problem)
+    (meeting room assignment)
+
+    activity selection problem
+        https://www.acmicpc.net/problem/9576
+        (distributing books)
 
 */
 
