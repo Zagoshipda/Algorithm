@@ -1,15 +1,19 @@
 /*
-    find prime numbers
     https://www.acmicpc.net/problem/1929
+    (find prime numbers)
+
+    similar problem
+        https://www.acmicpc.net/problem/2960
+        (reseto) : the sieve of Eratosthenes
 
     solutions
-    (8ms)
-    https://www.acmicpc.net/source/57200804
-    https://www.acmicpc.net/source/41233552
-    https://www.acmicpc.net/source/55676793
+        (8ms)
+        https://www.acmicpc.net/source/57200804
+        https://www.acmicpc.net/source/41233552
+        https://www.acmicpc.net/source/55676793
 
-    (bitset)
-    https://www.acmicpc.net/source/8800845
+        (bitset)
+        https://www.acmicpc.net/source/8800845
 */
 
 #include <bits/stdc++.h>
