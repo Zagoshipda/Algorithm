@@ -5,6 +5,8 @@
     similar problem
         https://www.acmicpc.net/problem/1684
         (same remainder)
+        https://www.acmicpc.net/problem/17433
+        (mysterious number)
 
     solutions
         https://www.acmicpc.net/source/21611522
