@@ -5,6 +5,8 @@
     similar problem
         https://www.acmicpc.net/problem/2981
         (granica)
+        https://www.acmicpc.net/problem/17433
+        (mysterious number)
 
     solutions
         https://www.acmicpc.net/source/17484684
