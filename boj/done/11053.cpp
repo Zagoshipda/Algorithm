@@ -1,3 +1,12 @@
+/*
+    https://www.acmicpc.net/problem/11053
+    (lis 1) : longest increasing subsequence
+
+    similar problem
+        https://www.acmicpc.net/problem/25343
+        (maximum lis)
+*/
+
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -53,6 +62,19 @@ void calculate_length_of_longest_increasing_subsequence_n2(){
     }
 }
 
+int dp[1001];
+void solve_lis_n2(){
+    for(int idx=0; idx<N; ++idx){
+        dp[idx] = 1;    // NOTE : a number is itself an increasing subsequence
+        for(int jdx=0; jdx<idx; ++jdx){
+            if(A[jdx] < A[idx]){
+                dp[idx] = max(dp[idx], dp[jdx] + 1);
+            }
+        }
+        max_length = max(max_length, dp[idx]);
+    }
+}
+
 void calculate_length_of_longest_increasing_subsequence_nlogn(){
     lis[0] = A[0];
     lis_size = 1;
@@ -84,8 +106,9 @@ int main(){
         cin >> A[i];
     }
 
-    calculate_length_of_longest_increasing_subsequence_n2();
-    // calculate_length_of_longest_increasing_subsequence_nlogn();
+    // calculate_length_of_longest_increasing_subsequence_n2();
+    calculate_length_of_longest_increasing_subsequence_nlogn();
+    // solve_lis_n2();
 
     cout << max_length << endl;
 
