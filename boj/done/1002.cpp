@@ -7,6 +7,10 @@
         (althea, 0 ms)
         https://www.acmicpc.net/source/5991788
         (donghoon0709, 0 ms)
+
+    similar problem
+        https://www.acmicpc.net/problem/2527
+        (rectangle)
 */
 
 #include <bits/stdc++.h>
