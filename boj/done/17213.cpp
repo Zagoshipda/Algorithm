@@ -3,6 +3,11 @@
     (fruit)
 
     solutions
+        https://www.acmicpc.net/source/24646784
+        (lycka, 0 ms) : recursive solution, implemented in solve_recursive()
+            actually, not storing values to dp-table
+            => return dp[n][m] = ret;
+
         https://www.acmicpc.net/source/54138998
         (imax, 0 ms) : multi-combination property, implemented in solve_dp_1()
             from nCr = n-1Cr-1 + n-1Cr
@@ -157,13 +162,31 @@ void solve_dp_2(){
     cout << dp_2[N] << endl;
 }
 
+int cache[MAX_NUM + 1][MAX_NUM + 1];
+int solve_recursive(int num_n, int num_m){
+    if(num_n <= 1){
+        return 1;
+    }
+    if(cache[num_n][num_m]){
+        return cache[num_n][num_m];
+    }
+
+    int val = 0;
+    for(int next_r=num_m-1; next_r>=num_n-1; --next_r){
+        val += solve_recursive(num_n-1, next_r);
+    }
+    return cache[num_n][num_m] = val;
+}
+
 void solve(){
     // solve_multi_combination();
 
     // solve_dp_suffix_1();
     // solve_dp_suffix_2();
 
-    solve_dp_2();
+    // solve_dp_2();
+
+    cout << solve_recursive(N, M) << endl;
 }
 
 void input(){
