@@ -2,6 +2,12 @@
     https://www.acmicpc.net/problem/10211
     (maximum subarray)
 
+    similar problem
+        https://www.acmicpc.net/problem/16512
+        (maximum subarrays)
+        https://www.acmicpc.net/problem/2670
+        (largest consecutive product)
+
     solutions
         https://www.acmicpc.net/source/4431816
         (goooora, 0 ms)
