@@ -1,5 +1,16 @@
 /*
     https://www.acmicpc.net/problem/2565
+    (wire 1)
+
+    similar problem
+        https://www.acmicpc.net/problem/1365
+        (twisted wire)
+        https://www.acmicpc.net/problem/1946
+        (newbie)
+
+    solutions
+        https://www.acmicpc.net/source/17333898
+        (cejung, 0 ms) : nlogn lis algorithm
 */
 
 #include <bits/stdc++.h>
@@ -31,6 +42,8 @@ using namespace std;
 #define SIZE 100
 #define RANGE 500
 int n;
+vector<pair<int, int>> in;
+
 vector<int> wire(SIZE + 1);
 
 int lis_size;
@@ -38,10 +51,16 @@ vector<int> lis;
 
 void initialize(){
     lis.push_back(wire[0]);
-    lis_size += 1;
+    lis_size = 1;
 }
 
-void solve(){
+void solve_lis(){
+    sort(in.begin(), in.end(), less<pair<int, int> >() );
+
+    for(int i=0; i<n; ++i){
+        wire[i] = in[i].second;
+    }
+
     initialize();
 
     // find longest increasing subsequence
@@ -64,21 +83,16 @@ void solve(){
     cout << n - lis_size << endl;
 }
 
-
-vector<pair<int, int>> in;
+void solve(){
+    solve_lis();
+}
 
 void input(){
     cin >> n;
     int a, b;
     for(int i=0; i<n; ++i){
         cin >> a >> b;
-
         in.push_back({a, b});
-    }
-    sort(in.begin(), in.end(), less<pair<int, int> >() );
-
-    for(int i=0; i<n; ++i){
-        wire[i] = in[i].second;
     }
 }
 
