@@ -1,10 +1,12 @@
 /*
     https://www.acmicpc.net/problem/1916
-    (minimum cost) : dijkstra
+    (minimum cost 1) : dijkstra
 
     similar problem
         https://www.acmicpc.net/problem/1753
         (shortest path)
+        https://www.acmicpc.net/problem/11779
+        (minimum cost 2)
 
     solutions
         https://www.acmicpc.net/source/9524683
