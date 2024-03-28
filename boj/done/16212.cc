@@ -22,7 +22,11 @@ int N;
 int arr[ARR_SIZE + 1];
 
 void solve(){
-
+    sort(arr+1, arr+1+N, less<int>());
+    for(int idx=1; idx<=N; ++idx){
+        cout << arr[idx] << " ";
+    }
+    cout << endl;
 }
 
 void input(){
