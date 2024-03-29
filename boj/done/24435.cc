@@ -2,6 +2,10 @@
     https://www.acmicpc.net/problem/24435
     (card game)
 
+    similar problem
+        https://www.acmicpc.net/problem/9440
+        (digit sum)
+
     solutions
         https://www.acmicpc.net/source/62719591
         (pizzaroot, 20 ms) : implemented in solve_permutation_1()
