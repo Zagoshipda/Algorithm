@@ -21,9 +21,20 @@ using namespace std;
         some multiple of n is a number which in decimal notation is a sequence of 1's
 
     Algorithm
-        1...1 = (10^k-1) / 9
-        10^phi(n) = 1 (mod n) if gcd(10, n)=1
-        10^phi(n)-1 = 0 => 1...1 = (10^phi(n)-1)/9 = 0 (mod n) s.t. phi(n) < n
+        observation : 1...1 = (10^k-1) / 9
+        (1) 10^phi(n) = 1 (mod n) if gcd(10, n)=1
+            n not divisible by 2 or 5 => not divisible by 10 => gcd(n, 10) = 1
+            => 10^phi(n) = 1 (mod n) or n^phi(10) = n^4 = 1 (mod 10)
+
+        (2) 10^phi(n)-1 = 0 => 1...1 = (10^phi(n)-1)/9 = 0 (mod n) s.t. phi(n) < n
+            (n * k) = a_x*10^x + a_x-1*10^x-1 + ... + a_1*10^1 + a_0 (x+1 digit)
+                    = 10^x + 10^x-1 + ... + 10^1 + 10^0 (since all a_i = 1)
+            here apply modular by n to both sides we get
+            0 = 10^x + 10^x-1 + ... + 10^1 + 10^0 (mod n)
+                = 1 + 1 + ... + 10^phi(n) + ... + 10^1 + 10^0 (mod n)
+                = x-phi(n) + 1...1(phi(n) + 1 digit) (mod n)
+            => brute force here, just add ones and take modular, and check if it becomes zero
+
 
 
     1 2 3 4 5 6 7 8 9 10
