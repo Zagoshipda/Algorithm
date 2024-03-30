@@ -3,6 +3,9 @@
     (trailing zeros on factorial)
 
     similar problem
+        https://www.acmicpc.net/problem/9693
+        (trailing zeros on factorial)
+
         https://www.acmicpc.net/problem/2004
         (trailing zeros on combination)
 
