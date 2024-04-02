@@ -2,6 +2,13 @@
     https://www.acmicpc.net/problem/18783
     (swapity swapity swap)
 
+    similar problem
+        https://www.acmicpc.net/problem/22863
+        (recovery large)
+
+        https://www.acmicpc.net/problem/3117
+        (youtube)
+
     solutions
         https://www.acmicpc.net/source/20916682
         (alex9801, 16 ms)
