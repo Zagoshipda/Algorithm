@@ -5,6 +5,9 @@
     sample input
         https://www.acmicpc.net/board/view/112075
 
+    similar problem
+        https://www.acmicpc.net/problem/2805
+        (rod cutting) : EKO
 */
 
 #include <bits/stdc++.h>
@@ -42,17 +45,17 @@ using namespace std;
 
 */
 
-const int NUM_CURRENT = 10'000;
+const int ARR_SIZE = 10'000;
 const int NUM_TARGET = 1'000'000;
+const ll MAX_NUM = INT_MAX;
 int K, N;
-int lans[NUM_CURRENT + 1];
+ll lans[ARR_SIZE + 1];
 
-void solve(){
+void solve_1(){
     sort(lans+1, lans+1+K, less<int>());
 
     ll max_len = 0; // NOTE : int range
     for(ll left=1, right=lans[K]; left<=right; ){   // NOTE : int range
-    // for(ll left=1, right=lans[1]; left<=right; ){   // WRONG
         ll len = (left + right) >> 1;   // NOTE : int range
         ll sum = 0;                     // NOTE : int range
         for(int idx=1; idx<=K; ++idx){
@@ -68,6 +71,33 @@ void solve(){
     }
 
     cout << max_len << endl;
+}
+
+void solve_parametric_search(){
+    ll max_length = 0;
+    ll left, right, middle;
+    for(left=1, right=MAX_NUM; left<=right; ){
+        middle = (left + right) >> 1;
+        int cnt = 0;
+        for(int idx=1; idx<=K; ++idx){
+            cnt += lans[idx] / middle;
+        }
+        // cout << middle << " " << cnt << endl;
+        if(cnt < N){
+            right = middle - 1;
+        }
+        else{
+            max_length = max(max_length, middle);
+            left = middle + 1;
+        }
+    }
+    // cout << max_length << endl;
+    cout << left - 1 << endl;
+}
+
+void solve(){
+    // solve_1();
+    solve_parametric_search();
 }
 
 void input(){
