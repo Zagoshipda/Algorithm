@@ -21,15 +21,17 @@ using namespace std;
         (2) k / 1/a1 + ... + 1/ak = h
 
     Algorithm
+        suppose divisors a1 <= ... <= ak are in increasing order
         (1) k = a1 + ... ak / a
         (2) k = h (1/a1 + ... + 1/ak)
         => (a1 + ... + ak) / a = h (1/a1 + ... + 1/ak)
         a1 + ... + ak = a*h (1/a1 + ... + 1/ak)
-        left : integer => right : integer
+        (observation 1) left : integer => right : integer
         => a*h is a multiple of lcm(a1 ... ak), a1 ... ak are divisors of n
-        => a*h is a multiple of n
-        => choice of divisors a1 ... ak of n, can be found from a*h
-        ah = n, 2n, ...
+        => a*h is a multiple of n : ah = n, 2n, ...
+        (observation 2) since two sets are the same {a1, ..., ak} = {a*h/a1, ..., a*h/ak}
+        a1 = a*h/ak, ..., ak = a*h/a1
+        => a*h = n
 */
 
 const ll MAX_NUM = 1'000'000'000'000'000;   // 10^15
