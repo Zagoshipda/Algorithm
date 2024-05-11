@@ -1,25 +1,30 @@
 /*
     https://www.acmicpc.net/problem/12865
-    knapsack problem (all values integer)
-        NOTE : what happens when weights or values are real-numbers ?
+    (knapsack problem 1)
+        NOTE : here, all values integer
+        what happens when weights or values are real-numbers ?
         time complexity O(N K) is pseudo-polynomial,
-        depends on the size of the input, and the numbers in the inputs
-        (here, the size of the knapsack)
-        therefore the time complexity may change
+        => depends on the size of the input,
+        and the numbers(numeric value) in the inputs (here, the size of the knapsack)
+        therefore the time complexity may depend on the input type (integer or not)
 
-    optimizing space complexity
-    https://www.acmicpc.net/source/22254620 (12 ms)
-    https://www.acmicpc.net/source/23753141 (12 ms)
-    https://www.acmicpc.net/source/30163906 (8 ms)
-    https://www.acmicpc.net/source/13130759 (4 ms)
-    https://www.acmicpc.net/source/30741285 (4 ms)
+    similar problem
+        https://www.acmicpc.net/problem/12920
+        (knapsack problem 2) : can pick object multiple times
 
+    solution
+        optimizing space complexity
+        https://www.acmicpc.net/source/22254620 (12 ms)
+        https://www.acmicpc.net/source/23753141 (12 ms)
+        https://www.acmicpc.net/source/30163906 (8 ms)
+        https://www.acmicpc.net/source/13130759 (4 ms)
+        https://www.acmicpc.net/source/30741285 (4 ms)
 
     references
-    https://gsmesie692.tistory.com/113
-    https://jeonyeohun.tistory.com/86
-    https://steadev.tistory.com/33
-    https://rujang.tistory.com/entry/%EB%B0%B1%EC%A4%80-12865%EB%B2%88-%ED%8F%89%EB%B2%94%ED%95%9C-%EB%B0%B0%EB%82%AD-CC
+        https://gsmesie692.tistory.com/113
+        https://jeonyeohun.tistory.com/86
+        https://steadev.tistory.com/33
+        https://rujang.tistory.com/entry/%EB%B0%B1%EC%A4%80-12865%EB%B2%88-%ED%8F%89%EB%B2%94%ED%95%9C-%EB%B0%B0%EB%82%AD-CC
 
 */
 
@@ -31,32 +36,36 @@ using namespace std;
 #define endl '\n'
 #define ll long long    // range : -9*10^18 ~ 9*10^18
 
-#define SIZE 100
-#define MAX_WEIGHT 100'000
+const int SIZE = 100;           // 10^2
+const int MAX_WEIGHT = 100'000; // 10^5
+const int MAX_VALUE = 1'000;    // 10^3
 int N, K;
-int W, V;   // weight & value
-pair<int, int> item[SIZE + 1];
+int W, V;
+pair<int, int> item[SIZE + 1];  // (weight, value)
 
 // time exceeded
 bool visited[SIZE + 1];
 int max_value;
-void knapsack_backtracking(int position, int current_value, int weight_left){
+void backtracking_time_exceeded(int position, int current_value, int weight_left){
+    // if(position >= N){   // WRONG
+        max_value = max(max_value, current_value);
+    //     return;
+    // }
+
     for(int i=position; i<N; ++i){
         if(!visited[i] && weight_left >= item[i].first){
             visited[i] = true;
             weight_left -= item[i].first;
             current_value += item[i].second;
-            knapsack_backtracking(i+1, current_value, weight_left);
+            backtracking_time_exceeded(i+1, current_value, weight_left);
             visited[i] = false;
             weight_left += item[i].first;
             current_value -= item[i].second;
         }
     }
-
-    max_value = max(max_value, current_value);
 }
 
-int dp[SIZE + 1][MAX_WEIGHT + 1];
+int dp[SIZE + 2][MAX_WEIGHT + 1];
 
 // dp[M+1][N] max value at item 1...M, with [N weight left]
 void knapsack_DP_prefix_1(){
@@ -148,7 +157,7 @@ void knapsack_DP_prefix_3(){
 //     dp[i+1][weight_left]
 // )
 
-void knapsack_DP_suffix(){
+void knapsack_dp_suffix_1(){
 
     for(int capacity=item[N-1].first; capacity<=K; ++capacity){
         dp[N-1][capacity] = item[N-1].second;
@@ -171,6 +180,43 @@ void knapsack_DP_suffix(){
     }
 
     // original problem
+    max_value = dp[0][K];
+}
+
+/*
+4 10
+3 6
+3 6
+8 20
+3 9
+
+// 21 (O)
+// 20 (X)
+
+*/
+void knapsack_dp_suffix_2(){
+    for(int idx=N-1; idx>=0; --idx){
+        // // WRONG
+        // for(int capacity=item[idx].first; capacity<=K; ++capacity){
+        //     dp[idx][capacity] = max({
+        //         dp[idx+1][capacity],
+        //         dp[idx+1][capacity - item[idx].first] + item[idx].second,
+        //     });
+        // }
+
+        for(int capacity=0; capacity<=K; ++capacity){
+            // NOTE : initialization necessary
+            dp[idx][capacity] = dp[idx+1][capacity];
+
+            if(item[idx].first <= capacity){
+                dp[idx][capacity] = max({
+                    dp[idx][capacity],
+                    dp[idx+1][capacity - item[idx].first] + item[idx].second,
+                });
+            }
+        }
+    }
+
     max_value = dp[0][K];
 }
 
@@ -236,7 +282,7 @@ void knapsack_DP_suffix(){
     T ime complexity
 */
 
-void knapsack_review(){
+void knapsack_prefix(){
     // for(int weight_left=0; weight_left<=K-item[0].first; ++weight_left){
     for(int weight_left=0; weight_left+item[0].first<=K; ++weight_left){
         dp[0][weight_left] = item[0].second;
@@ -263,8 +309,7 @@ void knapsack_review(){
 }
 
 void solve(){
-
-    // knapsack_backtracking(0, 0, K);
+    // backtracking_time_exceeded(0, 0, K);
 
     ///////////////////////////////////////////////////////////////
 
@@ -272,9 +317,10 @@ void solve(){
     // knapsack_DP_prefix_2();
     // knapsack_DP_prefix_3();
 
-    // knapsack_DP_suffix();
+    // knapsack_dp_suffix_1();
+    knapsack_dp_suffix_2();
 
-    knapsack_review();
+    // knapsack_prefix();
 
     cout << max_value << endl;
 }
