@@ -2,6 +2,10 @@
     https://www.acmicpc.net/problem/1484
     (diet)
 
+    similar problem
+        https://www.acmicpc.net/problem/6131
+        (perfect squares)
+
     solution
         implemented in solve_1()
             https://www.acmicpc.net/source/4662754
