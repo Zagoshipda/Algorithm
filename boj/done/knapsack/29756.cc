@@ -2,6 +2,10 @@
     https://www.acmicpc.net/problem/29756
     (DDR)
 
+    similar problem
+        https://www.acmicpc.net/problem/2342
+        (dance dance revolution)
+
     solution
         implemented in solve_dp_4()
             https://www.acmicpc.net/source/66694976
