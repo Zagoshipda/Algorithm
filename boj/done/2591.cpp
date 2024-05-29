@@ -1,6 +1,10 @@
 /*
     https://www.acmicpc.net/problem/2591
     (number card)
+
+    similar problem
+        https://www.acmicpc.net/problem/2011
+        (alphacode)
 */
 
 #include <bits/stdc++.h>
@@ -13,6 +17,10 @@ using namespace std;
 
 /*
 
+1110
+
+// 2
+
 */
 
 const int MIN_NUM = 1;
@@ -22,12 +30,12 @@ string card_number;
 
 int dp[MAX_LENGTH + 2];
 
-
 void solve_dp_suffix(){
     int len = card_number.size();
 
     dp[len+1] = 1;
-    dp[len] = 1;
+    // dp[len] = 1;                                // WRONG
+    dp[len] = card_number[len-1]-'0' ? 1 : 0;   // AC
     for(int idx=len-1; idx>=1; --idx){
         int curr_num = card_number[idx-1] - '0';
         int next_num = card_number[idx] - '0';
@@ -36,7 +44,8 @@ void solve_dp_suffix(){
             dp[idx] += dp[idx+1];
         }
 
-        if(10*curr_num + next_num <= MAX_NUM){
+        // if(10*curr_num + next_num <= MAX_NUM){              // WRONG
+        if(curr_num && 10*curr_num + next_num <= MAX_NUM){  // AC
             dp[idx] += dp[idx+2];
         }
     }
@@ -58,26 +67,8 @@ void solve_dp_prefix(){
         if(1 <= curr_num && curr_num <= 9){
             dp[idx] += dp[idx-1];
         }
-        if(0 < prev_num && 10*prev_num + curr_num <= MAX_NUM){
-            dp[idx] += dp[idx-2];
-        }
-    }
-
-    cout << dp[len] << endl;
-}
-
-void solve_dp_prefix_2(){
-    int len = card_number.size();
-
-    dp[0] = 1;
-    dp[1] = 1;
-    for(int idx=2; idx<=len; ++idx){
-        int prev_num = card_number[idx-2] - '0';
-        int curr_num = card_number[idx-1] - '0';
-
-        dp[idx] += dp[idx-1];
-
-        if(10*prev_num + curr_num <= MAX_NUM){
+        // if(10*prev_num + curr_num <= MAX_NUM){                  // WRONG
+        if(0 < prev_num && 10 * prev_num + curr_num <= MAX_NUM){  // AC
             dp[idx] += dp[idx-2];
         }
     }
@@ -86,9 +77,8 @@ void solve_dp_prefix_2(){
 }
 
 void solve(){
-    // solve_dp_suffix();
-    solve_dp_prefix();
-    // solve_dp_prefix_2();
+    solve_dp_suffix();
+    // solve_dp_prefix();
 }
 
 void input(){
