@@ -103,7 +103,7 @@ ll modular_inverse_recursive(ll base, int power){
     return inv;
 }
 
-void solve_1(){
+void solve_combinatorics(){
     ll numerator = 1;
     ll denominator = 1;
     for(ll choice=1; choice<=K; ++choice){
@@ -127,8 +127,15 @@ void solve_1(){
     cout << ans << endl;
 }
 
+void solve_dp(){
+    // N ~ 10^3 is small so we can use DP to calculate
+    // comb(N, K) : dp[n][k] = (dp[n-1][k-1] + dp[n-1][k]) % MOD
+}
+
 void solve(){
-    solve_1();
+    solve_combinatorics();
+
+    // solve_dp();
 }
 
 void input(){
