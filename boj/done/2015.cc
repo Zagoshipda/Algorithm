@@ -3,10 +3,16 @@
     (sum of numbers 4)
 
     similar problem
+        https://www.acmicpc.net/problem/1208
+        (sum of subarray/subsequence 2) : subset
+
         https://www.acmicpc.net/problem/2003
         (sum of numbers 2)
         ttps://www.acmicpc.net/problem/19566
         (segment mean)
+
+        https://www.acmicpc.net/problem/2018
+        (sum of numbers 5) : herd sums
 
     solution
         https://www.acmicpc.net/source/26717770
@@ -105,11 +111,24 @@ void solve_hash_2(){
     cout << cnt << endl;
 }
 
+void review(){
+    for(int idx=1; idx<=N; ++idx){
+        cnt += hashes[prefix_sum[idx] - K];
+        if(prefix_sum[idx] == K){
+            ++cnt;
+        }
+        ++hashes[prefix_sum[idx]];
+    }
+    cout << cnt << endl;
+}
+
 void solve(){
     // solve_two_pointer_wrong();
 
     // solve_hash_1();
-    solve_hash_2();
+    // solve_hash_2();
+
+    review();
 }
 
 void input(){
