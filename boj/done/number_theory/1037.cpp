@@ -1,6 +1,10 @@
 /*
-    divisor / factor
     https://www.acmicpc.net/problem/1037
+    (divisor / factor)
+
+    similar problem
+        https://www.acmicpc.net/problem/2247
+        (real divisor)
 */
 
 #include <bits/stdc++.h>
@@ -17,6 +21,10 @@ int N;
 int divisor_max = 0, divisor_min = RANGE;
 int divisor;
 
+void solve(){
+    cout << divisor_min * divisor_max << endl;
+}
+
 void input(){
     cin >> N;
     for(int i=0; i<N; ++i){
@@ -24,10 +32,6 @@ void input(){
         divisor_max = max(divisor_max, divisor);
         divisor_min = min(divisor_min, divisor);
     }
-}
-
-void solve(){
-    cout << divisor_min * divisor_max << endl;
 }
 
 int main(){
