@@ -2,9 +2,18 @@
     https://www.acmicpc.net/problem/18870
     (coordinate compression)
 
+    similar problem
+        https://www.acmicpc.net/problem/12867
+        (N dimensional journey)
+        https://www.acmicpc.net/problem/24035
+        (impartial offerings)
+
     solution
         https://www.acmicpc.net/source/38729117
         (rhs0266, 320 ms)
+
+    reference
+        https://restudycafe.tistory.com/612
 */
 
 #include <bits/stdc++.h>
@@ -66,17 +75,37 @@ void solve_2(){
     cout << endl;
 }
 
+vector<int> arr;
+vector<int> brr;
+void solve_vector(){
+    sort(brr.begin(), brr.end(), less<int>());
+
+    brr.erase(unique(brr.begin(), brr.end()), brr.end());
+
+    for(int idx=0; idx<N; ++idx){
+        cout << lower_bound(brr.begin(), brr.end(), arr[idx]) - brr.begin() << " ";
+    }
+    cout << endl;
+}
+
 void solve(){
-    solve_1();
+    // solve_1();
 
     // solve_2();
+
+    solve_vector();
 }
 
 void input(){
     cin >> N;
-    for(int i=1; i<=N; ++i){
-        cin >> X_i[i].first;
-        X_i[i].second = i;
+
+    arr.resize(N);
+    brr.resize(N);
+    for(int idx=1; idx<=N; ++idx){
+        cin >> X_i[idx].first;
+        X_i[idx].second = idx;
+
+        brr[idx-1] = arr[idx-1] = X_i[idx].first;
     }
 }
 
