@@ -1,6 +1,9 @@
 /*
     https://www.acmicpc.net/problem/9012
     (parenthesis)
+
+    reference
+        https://en.wikipedia.org/wiki/Dyck_language
 */
 
 #include <bits/stdc++.h>
