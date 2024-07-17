@@ -51,6 +51,21 @@ using namespace std;
     Specification
         n+1 sets, starting from 0...n
 
+
+6 6
+1 1 2
+1 1 3
+0 1 2
+1 1 2
+1 2 3
+1 1 3
+
+// NO
+// NO
+// YES
+// NO
+// NO
+
 */
 
 const int NUM_SET = 1'000'000;
@@ -142,9 +157,12 @@ class Disjoint_Set_Fast : Disjoint_Set_Slow{
 
             // optimization 1 : path halving
             while(parent[a] != a){
-                parent[a] = parent[parent[a]];
-                a = parent[a];
-                // a = parent[a] = parent[parent[a]];
+                // two-step
+                // parent[a] = parent[parent[a]];
+                // a = parent[a];
+
+                // one-step
+                a = parent[a] = parent[parent[a]];
             }
             return a;
 
@@ -156,7 +174,7 @@ class Disjoint_Set_Fast : Disjoint_Set_Slow{
             // }
             // return a;
 
-            // optimization 3 : path compression by recursion
+            // optimization 3 : path compression (by recursion)
             // if(parent[a] == a){
             //     return a;
             // }
