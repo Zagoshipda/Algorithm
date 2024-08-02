@@ -2,9 +2,12 @@
     https://www.acmicpc.net/problem/11659
     (range sum 4)
 
+    similar problem
+        https://www.acmicpc.net/problem/11441
+        (range sum)
+
     references
         https://book.acmicpc.net/algorithm/prefix-sum
-
 */
 
 #include <bits/stdc++.h>
