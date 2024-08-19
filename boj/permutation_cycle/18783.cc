@@ -5,7 +5,7 @@
     similar problem
         permutation cycle
             https://www.acmicpc.net/problem/22863
-            (recovery large)
+            (recovery - large)
             https://www.acmicpc.net/problem/6505
             (decode the strings)
 
