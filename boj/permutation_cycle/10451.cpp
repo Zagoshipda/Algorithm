@@ -8,7 +8,9 @@
 
     solutions
         https://www.acmicpc.net/source/8995164
-        (cepiloth, 36 ms)
+        (cepiloth, 36 ms) : recursive dfs
+        https://www.acmicpc.net/source/43759312
+        (p_ce1052, 36 ms) : iterative dfs
 */
 
 #include <bits/stdc++.h>
@@ -20,7 +22,16 @@ using namespace std;
 #define ll long long    // range : -9*10^18 ~ 9*10^18
 
 /*
-    counts the number of permuation cycles in a given permutation of n integers
+    Specification
+        counts the [number of permuation cycles] in a given permutation of n integers
+
+ex.
+1
+10
+2 1 3 4 5 6 7 9 10 8
+
+// 7
+
 */
 
 const int MAX_NUM = 1'000;  // 10^3
@@ -29,75 +40,102 @@ int n;
 
 int ans;
 bool visited[MAX_NUM + 1];
+
+// NOTE : graph can have self loops (k -> k identity permutation)
 vector<int> graph[MAX_NUM + 1]; // directed graph
-// set<int> cycle;
 
 void initialize(){
     for(int idx=0; idx<=MAX_NUM; ++idx){
         visited[idx] = false;
+        // graph[idx].clear();
     }
     ans = 0;
-
-    // cycle.clear();
 }
 
-void dfs_graph(int vertex){
-    visited[vertex] = true;
-    // cycle.insert(vertex);
+void dfs_graph(int curr){
+    visited[curr] = true;
 
-    for(int next : graph[vertex]){
+    for(int next : graph[curr]){
         if(!visited[next]){
             dfs_graph(next);
-        }
-        else{   // visited[next]
-            // auto search = cycle.find(vertex);
-            // if(search != cycle.end()){
-            ++ans;
-            // return;
-            // }
         }
     }
 }
 
 void solve_graph(){
-    initialize();
-
     for(int idx=1; idx<=n; ++idx){
-        if(!graph[idx].empty() && !visited[idx]){
-            dfs_graph(idx);
+        if(!visited[idx]){
+            // if(!graph[idx].empty()){    // WRONG
+            if(idx != graph[idx].front()){
+                dfs_graph(idx);
+            }
+
+            ++ans;
         }
     }
 
     cout << ans << endl;
 }
 
-int arr[MAX_NUM + 1];
-void dfs_array(int pos){
-    if(visited[pos]){
+int perm[MAX_NUM + 1];
+void dfs_1(int curr){
+    if(visited[curr]){
         return;
     }
 
-    visited[pos] = true;
-    dfs_array(arr[pos]);
+    visited[curr] = true;
+    dfs_1(perm[curr]);
 }
 
-void solve_array(){
-    initialize();
+void dfs_2(int curr){
+    visited[curr] = true;
 
+    if(!visited[perm[curr]]){
+        dfs_2(perm[curr]);
+    }
+}
+
+void solve_dfs_recursive(){
     for(int idx=1; idx<=n; ++idx){
         if(!visited[idx]){
+            // dfs_1(idx);
+            dfs_2(idx);
+
             ++ans;
-            dfs_array(idx);
         }
     }
 
+    cout << ans << endl;
+}
+
+
+void solve_dfs_iterative(){
+    for(int ith=1; ith<=n; ++ith){
+        if(!visited[ith]){
+            int pos = ith;
+            // while(perm[pos] != ith){
+            //     visited[pos] = true;
+            //     pos = perm[pos];
+            // }
+            // visited[pos] = true;
+
+            while(!visited[pos]){
+                visited[pos] = true;
+                pos = perm[pos];
+            }
+
+            ++ans;
+        }
+    }
     cout << ans << endl;
 }
 
 void solve(){
-    // solve_graph();
+    // solve_graph();              // 40 ms
 
-    solve_array();
+    // solve_dfs_recursive();  // 36 ms
+
+    solve_dfs_iterative();  // 36 ms
 }
 
 void input(){
@@ -105,11 +143,14 @@ void input(){
     while(T--){
         cin >> n;
 
+        initialize();
+
         int input;
-        for(int i=1; i<=n; ++i){
+        for(int ith=1; ith<=n; ++ith){
             cin >> input;
-            arr[i] = input;
-            graph[i].push_back(input);
+            perm[ith] = input;
+
+            // graph[ith].push_back(input);
         }
 
         solve();
