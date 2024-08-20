@@ -1,3 +1,12 @@
+/*
+    https://www.acmicpc.net/problem/1932
+    (the triangle)
+
+    similar problem
+        https://www.acmicpc.net/problem/6005
+        (cow pinball)
+*/
+
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -30,10 +39,8 @@ void calculate_max_sum(){
     }
 
     for(int i=0; i<N; ++i){
-        // cout << triangle_sum[N-1][i] << " ";
         max_triangle_sum = max(max_triangle_sum, triangle_sum[N-1][i]);
     }
-    // cout << endl;
 }
 
 int main(){
