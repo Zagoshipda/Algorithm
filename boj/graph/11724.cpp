@@ -1,3 +1,12 @@
+/*
+    https://www.acmicpc.net/problem/11724
+    (number of connected components)
+
+    similar problem
+        https://www.acmicpc.net/problem/17197
+        (fence planning)
+*/
+
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -42,15 +51,19 @@ void calculate_number_of_connected_component(){
     cout << num << endl;
 }
 
-int main(){
-    IOS;
-
+void input(){
     cin >> N >> M;
     for(int i=0; i<M; ++i){
         cin >> u >> v;
         graph[u].push_back(v);
         graph[v].push_back(u);
     }
+}
+
+int main(){
+    IOS;
+
+    input();
 
     calculate_number_of_connected_component();
 
