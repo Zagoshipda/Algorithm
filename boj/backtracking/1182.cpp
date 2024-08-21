@@ -23,6 +23,30 @@ using namespace std;
 #define endl '\n'
 #define ll long long    // range : -9*10^18 ~ 9*10^18
 
+/*
+
+4 1
+1 2 3 4
+
+5 4
+1 3 1 3 1
+
+3 -1
+-1 1 2
+
+3 1
+1 -1 2
+
+3 0
+0 -1 0
+
+5 -2
+-1 -1 -1 -1 -1
+
+5 0
+0 0 0 0 0
+
+*/
 #define SIZE 20
 #define MAX_TARGET 1'000'000
 int N, S;
