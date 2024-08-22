@@ -1,13 +1,19 @@
 /*
     https://www.acmicpc.net/problem/15815
-    (evaluate the expression)
+    (calculate postfix notation)
+
+    similar problem
+        https://www.acmicpc.net/problem/1918
+        (postfix notation 1)
+        https://www.acmicpc.net/problem/15659
+        (operator insertion 3)
 
     solutions
-        using array index
-        https://www.acmicpc.net/source/8814794
-        (YunGoon, 0 ms)
-        https://www.acmicpc.net/source/18262000
-        (goooora, 0 ms)
+        using array index : idx-2, idx-1, idx
+            https://www.acmicpc.net/source/8814794
+            (YunGoon, 0 ms)
+            https://www.acmicpc.net/source/18262000
+            (goooora, 0 ms)
 
         using stack
         https://www.acmicpc.net/source/8795593
@@ -24,50 +30,61 @@ using namespace std;
 #define ll long long    // range : -9*10^18 ~ 9*10^18
 
 /*
-    a+b*c = abc*+
-    a*b+c = ((a*b)+c) = (a*b)c+ = ab*c+
+    Algorithm
+        prefix, infix, postfix notation
 
-    12*3+
+        a+b*c = abc*+
+        a*b+c = ((a*b)+c) = (a*b)c+ = ab*c+
 
-    ((a+b)+(c*d)) = ((ab+)+(cd)*) = ab+cd*+
-    (a+(b+(c*d))) = (a+(b+cd*)) = a+bcd*+ = abcd*++
+        12*3+
 
-    ((a+b)+c) = (ab+)+c = ab+c+
-    a+(b+c) = a+bc+ = abc++
+        ((a+b)+(c*d)) = ((ab+)+(cd)*) = ab+cd*+
+        (a+(b+(c*d))) = (a+(b+cd*)) = a+bcd*+ = abcd*++
+
+        ((a+b)+c) = (ab+)+c = ab+c+
+        a+(b+c) = a+bc+ = abc++
 */
 
+const int MAX_LENGTH = 100;     // 10^2
+
 string expression;
-void solve(){
-    int len = expression.size();
-    stack<char> stk_operation;
+
+void solve_stack(){
     stack<int> stk_number;
+    int len = expression.size();
+
     for(int idx=0; idx<len; ++idx){
-        if('0' <= expression[idx] && expression[idx] <= '9'){
-            stk_number.push(expression[idx] - '0');
+        char curr = expression[idx];
+        if('0' <= curr && curr <= '9'){
+            stk_number.push(curr - '0');
         }
-        else{   // expression[idx] < '0'
-            int num_1 = stk_number.top();
-            stk_number.pop();
+        else{   // curr < '0'
+            // NOTE : numbers from stack in reverse order
             int num_2 = stk_number.top();
             stk_number.pop();
+            int num_1 = stk_number.top();
+            stk_number.pop();
 
-            // NOTE : numbers in reverse order
-            if(expression[idx] == '+'){
-                stk_number.push(num_2 + num_1);
+            if(curr == '+'){
+                stk_number.push(num_1 + num_2);
             }
-            else if(expression[idx] == '-'){
-                stk_number.push(num_2 - num_1);
+            else if(curr == '-'){
+                stk_number.push(num_1 - num_2);
             }
-            else if(expression[idx] == '*'){
-                stk_number.push(num_2 * num_1);
+            else if(curr == '*'){
+                stk_number.push(num_1 * num_2);
             }
-            else if(expression[idx] == '/'){
-                stk_number.push(num_2 / num_1);
+            else if(curr == '/'){
+                stk_number.push(num_1 / num_2);
             }
         }
     }
 
     cout << stk_number.top() << endl;
+}
+
+void solve(){
+    solve_stack();
 }
 
 void input(){
