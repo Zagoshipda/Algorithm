@@ -2,6 +2,12 @@
     https://www.acmicpc.net/problem/13171
     (logarithmic exponential)
 
+    similar problem
+
+        sparse table
+            https://www.acmicpc.net/problem/17435
+            (function composition and query)
+
     solutions
         recursive solution, implemented in solve_recursive()
             https://www.acmicpc.net/source/14635882
