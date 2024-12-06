@@ -1,7 +1,10 @@
 /*
-    https://cocoon1787.tistory.com/347
-    https://gamedoridori.tistory.com/76
-    https://velog.io/@wxxhyeong/%EB%B0%B1%EC%A4%80-17298.-%EC%98%A4%ED%81%B0%EC%88%98
+    https://www.acmicpc.net/problem/17298
+    (next greater element)
+
+    similar problem
+        https://www.acmicpc.net/problem/2493
+        (tower)
 */
 
 #include <bits/stdc++.h>
@@ -12,32 +15,33 @@ using namespace std;
 #define endl '\n'
 #define ll long long    // range : -9*10^18 ~ 9*10^18
 
-#define SIZE 1'000'001
-int N;
-int arr[SIZE];
-int nge[SIZE];
+const int ARR_SIZE = 1'000'000; // 10^6
+const int MAX_NUM = 1'000'000;  // 10^6
 
-stack<int> stk;
+int N;
+int arr[ARR_SIZE + 1];
+int nge[ARR_SIZE + 1];  // next greater element
 
 void print_nge(){
-    for(int i=0; i<N; ++i){
-        cout << nge[i] << " ";
+    for(int ith=0; ith<N; ++ith){
+        cout << nge[ith] << " ";
     }
     cout << endl;
 }
 
 void calculate_right_bigger_number_forwards(){
-    for(int i=0; i<N; ++i){
+    stack<int> stk; // idx
+    for(int ith=0; ith<N; ++ith){
         while(!stk.empty()){
-            if(arr[stk.top()] < arr[i]){
-                nge[stk.top()] = arr[i];
+            if(arr[stk.top()] < arr[ith]){
+                nge[stk.top()] = arr[ith];
                 stk.pop();
             }
             else{
                 break;
             }
         }
-        stk.push(i);
+        stk.push(ith);
     }
 
     while(!stk.empty()){
@@ -46,14 +50,14 @@ void calculate_right_bigger_number_forwards(){
     }
 
     // int size = stk.size();
-    // for(int i=0; i<size; ++i){
+    // for(int ith=0; ith<size; ++ith){
     //     nge[stk.top()] = -1;
     //     stk.pop();
     // }
 
-    // for(int i=0; i<N; ++i){
-    //     if(nge[i] <= 0){
-    //         nge[i] = -1;
+    // for(int ith=0; ith<N; ++ith){
+    //     if(nge[ith] <= 0){
+    //         nge[ith] = -1;
     //     }
     // }
 
@@ -61,9 +65,10 @@ void calculate_right_bigger_number_forwards(){
 }
 
 void calculate_right_bigger_number_backwards(){
-    for(int i=N-1; i>=0; --i){
+    stack<int> stk; // idx
+    for(int ith=N-1; ith>=0; --ith){
         while(!stk.empty()){
-            if(stk.top() <= arr[i]){
+            if(stk.top() <= arr[ith]){
                 stk.pop();
             }
             else{
@@ -72,13 +77,42 @@ void calculate_right_bigger_number_backwards(){
         }
 
         if(stk.empty()){
-            nge[i] = -1;
+            nge[ith] = -1;
         }
         else{
-            nge[i] = stk.top();
+            nge[ith] = stk.top();
         }
 
-        stk.push(arr[i]);
+        stk.push(arr[ith]);
+    }
+
+    print_nge();
+}
+
+using p_ii = pair<int, int>;
+
+void initialize(){
+    for(int ith=0; ith<N; ++ith){
+        nge[ith] = -1;
+    }
+}
+
+void solve_1(){
+    initialize();
+
+    stack<p_ii> stk;    // (val, idx)
+    for(int ith=0; ith<N; ++ith){
+        while(!stk.empty()){
+            auto [val, idx] = stk.top();
+            if(val < arr[ith]){
+                nge[idx] = arr[ith];
+                stk.pop();
+            }
+            else{
+                break;
+            }
+        }
+        stk.push({arr[ith], ith});
     }
 
     print_nge();
@@ -88,18 +122,18 @@ int main(){
     IOS;
 
     cin >> N;
-    for(int i=0; i<N; ++i){
-        cin >> arr[i];
+    for(int ith=0; ith<N; ++ith){
+        cin >> arr[ith];
         // while(!stk.empty()){
-        //     if(arr[stk.top()] < arr[i]){
-        //         nge[stk.top()] = arr[i];
+        //     if(arr[stk.top()] < arr[ith]){
+        //         nge[stk.top()] = arr[ith];
         //         stk.pop();
         //     }
         //     else{
         //         break;
         //     }
         // }
-        // stk.push(i);
+        // stk.push(ith);
     }
 
     // while(!stk.empty()){
@@ -109,9 +143,11 @@ int main(){
 
     // print_nge();
 
-    // calculate_right_bigger_number_forwards();
+    calculate_right_bigger_number_forwards();
 
-    calculate_right_bigger_number_backwards();
+    // calculate_right_bigger_number_backwards();
+
+    // solve_1();
 
     return 0;
 }
