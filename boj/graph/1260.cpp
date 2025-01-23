@@ -1,3 +1,8 @@
+/*
+    https://www.acmicpc.net/problem/1260
+    (dfs bfs)
+*/
+
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -6,60 +11,99 @@ using namespace std;
 #define endl '\n'
 #define ll long long    // range : -9*10^18 ~ 9*10^18
 
+const int NUM_VERTEX = 1'000;   // 10^3
+const int NUM_EDGE = 10'000;    // 10^4
 
 int N, M, V;
 int a, b;
 
-void dfs(int start, set<int>* graph, bool* visited){
-    visited[start] = true;
+// undirected graph, can have multiple edges between two vertices
+set<int> graph[NUM_VERTEX + 1];
+bool visited_dfs[NUM_VERTEX + 1];
+bool visited_bfs[NUM_VERTEX + 1];
+
+void dfs_1(int start){
+    visited_dfs[start] = true;
     cout << start << " ";
 
     for(int next : graph[start]){
-        if(!visited[next]){
-            dfs(next, graph, visited);
+        if(!visited_dfs[next]){
+            dfs_1(next);
         }
     }
 }
 
-queue<int> q;
+stack<int> stk;
+void dfs_2(){
+    // visited_dfs[V] = true;
+    stk.push(V);
 
-void bfs(int start, set<int>* graph, bool* visited){
-    visited[start] = true;
-    cout << start << " ";
-    q.push(start);
-    while(!q.empty()){
-        int node = q.front();
-        q.pop();
-        for(int next : graph[node]){
-            if(!visited[next]){
-                visited[next] = true;
-                cout << next << " ";
-                q.push(next);
+    while(!stk.empty()){
+        int curr = stk.top();
+        stk.pop();
+
+        if(visited_dfs[curr]){
+            continue;
+        }
+        visited_dfs[curr] = true;
+        cout << curr << " ";
+
+        // NOTE : visit small node first
+        for(auto it=graph[curr].rbegin(); it!=graph[curr].rend(); ++it){
+            int next = *it;
+            if(!visited_dfs[next]){
+                // visited_dfs[next] = true;    // WRONG
+                stk.push(next);
             }
         }
     }
+    cout << endl;
+}
+
+queue<int> nodes;
+void bfs(){
+    // visited_bfs[V] = true;
+    nodes.push(V);
+
+    while(!nodes.empty()){
+        int node = nodes.front();
+        nodes.pop();
+
+        if(visited_bfs[node]){
+            continue;
+        }
+        visited_bfs[node] = true;
+        cout << node << " ";
+
+        for(int next : graph[node]){
+            if(!visited_bfs[next]){
+                // NOTE : avoid visiting again
+                // visited_bfs[next] = true;
+                nodes.push(next);
+            }
+        }
+    }
+    cout << endl;
 }
 
 int main(){
     IOS;
 
     cin >> N >> M >> V;
-    // undirected graph, multiple edges between two vertices available.
-    set<int> graph[N+1];
-    for(int i=0; i<M; ++i){
+
+    for(int ith=0; ith<M; ++ith){
         cin >> a >> b;
         graph[a].insert(b);
         graph[b].insert(a);
     }
 
-    bool visited_dfs[N+1] = { false };
-    bool visited_bfs[N+1] = { false };
+    // NOTE : print vertices in [visiting order] != [finishing order]
+    // dfs_1(V);
+    // cout << endl;
 
-    // print vertices in visiting order.
-    dfs(V, graph, visited_dfs);
-    cout << endl;
-    bfs(V, graph, visited_bfs);
-    cout << endl;
+    dfs_2();
+
+    bfs();
 
     return 0;
 }
