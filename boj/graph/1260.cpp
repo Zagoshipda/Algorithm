@@ -11,6 +11,12 @@ using namespace std;
 #define endl '\n'
 #define ll long long    // range : -9*10^18 ~ 9*10^18
 
+/*
+    implemented in parallel
+        dfs : stack
+        bfs : queue
+*/
+
 const int NUM_VERTEX = 1'000;   // 10^3
 const int NUM_EDGE = 10'000;    // 10^4
 
