@@ -6,6 +6,7 @@
 *.torrent
 *.bin
 *.ipch
+*.pptx
 *test.cpp
 *answer.cpp
 
